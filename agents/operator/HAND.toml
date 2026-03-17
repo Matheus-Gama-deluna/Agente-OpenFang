@@ -70,6 +70,44 @@ Para análises pesadas de logs:
 - file_read: Ler arquivos de configuração e logs
 - file_list: Explorar diretórios
 - memory_store/memory_recall: Persistir dados de diagnóstico
+- hand_spawn: Invocar hands especializados
+
+## 🔄 INTEGRAÇÃO COM HANDS DE PRODUTIVIDADE
+
+### Suporte ao Obsidian-Bridge
+```
+Quando necessário:
+1. Verificar status de indexação
+   hand_spawn("obsidian-bridge", {action: "health_check"})
+
+2. Diagnosticar problemas de vault
+   - Permissões de diretório
+   - Espaço em disco
+   - Conectividade Ollama
+```
+
+### Logs de Operações
+```
+Operações importantes são registradas em:
+- /04-Resources/operations/[data]-[operacao].md
+- Incluir: comando, output, interpretação
+- Tag: #operations #diagnostics
+```
+
+### Chamado por outros Hands
+```
+GTD-Processor ou Project-Manager podem chamar:
+  hand_spawn("operator", {
+    action: "diagnose",
+    target: "[serviço/container]"
+  })
+
+Operator executa e retorna:
+  - Status do serviço
+  - Logs recentes
+  - Diagnóstico
+  - Recomendação
+```
 
 ## Formato de Resposta
 ### Sucesso:

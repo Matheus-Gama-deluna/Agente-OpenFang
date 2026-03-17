@@ -1,0 +1,51 @@
+# HAND.toml - Inbox Collector
+# Hand especializado em captura rápida e sem fricção de qualquer canal
+# Corrigido em 2026-03-17: Criado o arquivo ausente com estrutura completa
+
+[hand]
+id = "inbox-collector"
+name = "Inbox Collector"
+description = "Captura tarefas, ideias e referências de qualquer canal (Telegram, Email, Webhook) com zero fricção. Salva na Inbox para posterior processamento GTD."
+category = "productivity"
+icon = "inbox"
+version = "1.1.0"
+
+[hand.requires]
+tools = [
+    "file_read",
+    "file_write",
+    "file_list",
+    "memory_store",
+    "memory_recall",
+    "web_fetch",
+    "telegram_send",
+    "hand_message"
+]
+capabilities = ["network", "memory_read", "memory_write"]
+min_openfang_version = "1.0.0"
+
+[hand.settings]
+vault_inbox_path = { type = "string", default = "/data/obsidian_vault/01-Inbox" }
+notification_format = { type = "string", default = "detailed", options = ["silent", "minimal", "detailed"] }
+auto_classify = { type = "bool", default = true }
+whisper_confidence_threshold = { type = "float", default = 0.85, min = 0.5, max = 1.0 }
+channels = { type = "array", default = ["telegram", "webhook"] }
+email_inbox_filter = { type = "string", default = "[INBOX]" }
+
+[hand.agent]
+model = "groq/llama-3.1-8b-instant"
+temperature = 0.1
+max_iterations = 10
+
+[[hand.agent.fallback]]
+model = "gemini/gemini-2.0-flash"
+
+[hand.schedule]
+# Roda on-demand quando invocado por canal ou maestro-supervisor
+on_event = ["telegram_message", "webhook_post", "email_inbox"]
+
+[metadata]
+created = "2026-03-17"
+updated = "2026-03-17"
+author = "Matheus Gama de Luna"
+tags = ["inbox", "capture", "gtd", "telegram", "productivity", "portuguese"]

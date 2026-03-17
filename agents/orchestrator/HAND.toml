@@ -1,3 +1,11 @@
+# DEPRECIADO - Este arquivo é redundante com agent.toml
+# =====================================================
+# CORREÇÃO 2026-03-17: O orchestrator usa agent.toml como fonte de verdade.
+# Este arquivo foi mantido apenas para referência histórica.
+# Use: agents/orchestrator/agent.toml
+# NÃO EDITE ESTE ARQUIVO - edite o agent.toml
+# =====================================================
+
 # agent.toml - Orchestrator (Maestro-Líder)
 # Nível 1 -- Fronteira | Metaagente que coordena a frota de agentes
 # Fallback: groq/llama-3.3-70b-versatile
@@ -61,7 +69,9 @@ model = "llama-3.3-70b-versatile"
 api_key_env = "GROQ_API_KEY"
 
 [schedule]
-periodic = { cron = "every 2m" }
+# NOTA: o agent.toml usa "every 5m" - CONFLITO RESOLVIDO
+# Usar configuração do agent.toml (every 5m é suficiente)
+periodic = { cron = "every 5m" }
 
 [resources]
 max_llm_tokens_per_hour = 500000

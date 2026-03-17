@@ -1,0 +1,63 @@
+# HAND.toml - GTD Processor
+# Hand especializado em processamento GTD (Process, Organize, Review)
+# Corrigido em 2026-03-17: Removidas tools fictícias, adicionado [hand.agent], [hand.schedule], [hand.settings]
+
+[hand]
+id = "gtd-processor"
+name = "GTD Processor"
+description = "Processa itens da Inbox usando metodologia GTD pura. Clarifica, organiza, revisa. Usa raciocínio do LLM para classificação e shell_exec para operações de arquivo."
+category = "productivity"
+icon = "settings"
+version = "1.1.0"
+
+[hand.requires]
+tools = [
+    "file_read",
+    "file_write",
+    "file_move",
+    "file_list",
+    "shell_exec",
+    "memory_store",
+    "memory_recall",
+    "hand_message",
+    "hand_spawn",
+    "telegram_send"
+]
+capabilities = ["network", "memory_read", "memory_write"]
+min_openfang_version = "1.0.0"
+
+# Notas:
+# - intent_classifier_gtd, action_extractor, project_detector, context_assigner,
+#   outcome_formulator, stale_detector foram removidos (não existem no OpenFang)
+# - A classificação GTD é feita via raciocínio do LLM no system-prompt.md
+# - Operações de YAML frontmatter são feitas via shell_exec + scripts/vault_ops.py
+
+[hand.settings]
+vault_path = { type = "string", default = "/data/obsidian_vault" }
+inbox_path = { type = "string", default = "/data/obsidian_vault/01-Inbox" }
+actions_path = { type = "string", default = "/data/obsidian_vault/03-Areas" }
+projects_path = { type = "string", default = "/data/obsidian_vault/02-Projects" }
+resources_path = { type = "string", default = "/data/obsidian_vault/04-Resources" }
+archive_path = { type = "string", default = "/data/obsidian_vault/05-Archive" }
+two_minute_rule = { type = "bool", default = true }
+stale_days_threshold = { type = "integer", default = 7, min = 1, max = 30 }
+daily_review_hour = { type = "integer", default = 18, min = 0, max = 23 }
+scripts_path = { type = "string", default = "/data/openfang/scripts" }
+
+[hand.agent]
+model = "groq/llama-3.3-70b-versatile"
+temperature = 0.2
+max_iterations = 40
+
+[[hand.agent.fallback]]
+model = "gemini/gemini-2.5-flash"
+
+[hand.schedule]
+cron = "0 18 * * *"    # Revisão diária às 18:00
+on_event = ["hand_invoke"]
+
+[metadata]
+created = "2026-03-17"
+updated = "2026-03-17"
+author = "Matheus Gama de Luna"
+tags = ["gtd", "process", "organize", "review", "productivity", "portuguese"]

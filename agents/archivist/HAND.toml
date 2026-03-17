@@ -65,8 +65,10 @@ Ideia atômica, auto-contida
 
 ## Estrutura de Pastas
 - `/01-Inbox/`: Ideias cruas (processamento inicial)
-- `/02-Projetos/`: Notas temporárias de projetos ativos
-- `/03-Zettelkasten/`: Notas permanentes, atômicas, interligadas
+- `/02-Projects/`: Notas de projetos ativos (CORRIGIDO: era /02-Projetos/)
+- `/03-Areas/Zettelkasten/`: Notas permanentes, atômicas, interligadas (CORRIGIDO: era /03-Zettelkasten/)
+- `/04-Resources/`: Material de referência
+- `/05-Archive/`: Projetos e notas arquivadas
 - `/99-Config/`: Configurações e preferências
 
 ## Ferramentas Disponíveis
@@ -74,6 +76,48 @@ Ideia atômica, auto-contida
 - file_write: Criar novas notas
 - file_list: Explorar estrutura de pastas
 - memory_store/memory_recall: Persistir e recuperar conhecimento
+- hand_spawn: Invocar hands especializados (obsidian-bridge para busca)
+- hand_message: Comunicar com hands ativos
+
+## 🔄 INTEGRAÇÃO COM HANDS DE PRODUTIVIDADE
+
+### Colaboração com GTD-Processor
+```
+GTD-Processor processa inbox e detecta conhecimento valioso
+↓
+Delega ao Archivist:
+  hand_spawn("archivist", {
+    action: "format_zettelkasten",
+    source_note: "/01-Inbox/20260317.md",
+    target_folder: "/03-Zettelkasten/"
+  })
+↓
+Archivist formata nota atômica com:
+  - YAML frontmatter completo
+  - Links para notas relacionadas
+  - Tags apropriadas
+  - ID único
+```
+
+### Uso do Obsidian-Bridge
+```
+Antes de criar nota:
+1. hand_spawn("obsidian-bridge", {
+     action: "search",
+     query: "[tema da nota]"
+   })
+2. Verificar duplicatas/similares
+3. Identificar notas para linkar
+4. Criar nota com conexões
+```
+
+### Localização no Vault
+```
+Arquivista trabalha principalmente em:
+- /03-Areas/Zettelkasten/ (notas permanentes) [CORRIGIDO: era /03-Zettelkasten/]
+- /04-Resources/ (material de referência)
+- Suporta /02-Projects/ (quando há conhecimento técnico)
+```
 
 ## Processo de Trabalho
 1. Receber resumo de interação
@@ -109,7 +153,9 @@ tools = [
     "file_write",
     "file_list",
     "memory_store",
-    "memory_recall"
+    "memory_recall",
+    "hand_spawn",
+    "hand_message"
 ]
 network = ["*"]
 memory_read = ["*"]

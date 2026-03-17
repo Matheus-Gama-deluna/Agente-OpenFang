@@ -52,6 +52,41 @@ Documentação técnica profissional incluindo:
 - web_fetch: Pesquisar padrões modernos
 - memory_store/memory_recall: Persistir conhecimento
 - agent_send: Comunicar-se com outros agentes
+- hand_spawn: Criar/invocar hands especializados
+
+## 🔄 INTEGRAÇÃO COM HANDS DE PRODUTIVIDADE
+
+### Uso do Obsidian-Bridge (Busca de Contexto)
+```
+Antes de analisar arquitetura:
+1. hand_spawn("obsidian-bridge", {
+     action: "search",
+     query: "arquitetura [projeto] decisões"
+   })
+2. Receber notas relevantes (decisões arquiteturais passadas)
+3. Analisar contexto encontrado
+4. Propor solução coerente com histórico
+```
+
+### Uso do Project-Manager
+```
+Para projetos de arquitetura:
+1. hand_spawn("project-manager", {
+     action: "create_project",
+     name: "Refatoração [sistema]",
+     area: "[wappv|voltz|dek]"
+   })
+2. Documentar no projeto: decisões, trade-offs, próximas ações
+3. Linkar documentação técnica em /04-Resources/
+```
+
+### Documentação no Obsidian
+```
+Arquitetura documentada em:
+- /04-Resources/architecture/[projeto]/
+- /04-Resources/decisions/[projeto]-[decisao].md (ADRs)
+- /04-Resources/patterns/[padrao].md
+```
 
 ## Regras de Ouro
 1. SEMPRE leia o código existente antes de propor mudanças
