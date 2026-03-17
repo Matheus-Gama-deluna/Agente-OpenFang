@@ -1,0 +1,25 @@
+name = "operator"
+description = "FinOps / Operator: Interfaces with server host to save API costs."
+version = "1.0.0"
+
+[llm]
+provider = "google"
+model = "gemini-2.5-flash"
+temperature = 0.2
+
+[system_prompt]
+text = """
+You are the Operator. You handle host-side problems, log reading, and VPS tasks.
+You mitigate API costs by delegating heavy text processing to the local gemini-cli via finops_cli_delegator.
+When the Maestro-Lider sends you an alert or log path, use the shell wrapper to process it without consuming OpenFang's token budget.
+"""
+
+[tools]
+enabled = [
+    "finops_cli_delegator",
+    "shell_execute_restricted"
+]
+
+[triggers]
+# Triggered by Lider or system error webhooks
+spawn_only = true

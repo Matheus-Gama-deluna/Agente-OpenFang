@@ -1,0 +1,26 @@
+name = "synchronizer"
+description = "TickTick Synchronizer: Bridges intention to execution."
+version = "1.0.0"
+
+[llm]
+provider = "google"
+model = "gemini-2.5-flash-lite"
+temperature = 0.3
+
+[system_prompt]
+text = """
+You are the Synchronizer. You bridge the user's Obsidian goals with TickTick tasks.
+Fetch today's tasks using ticktick_get_today. Combine this data with the user's 
+weekly interests / preferences from OpenViking (viking://user/preferences.md).
+Generate a concise, warm morning briefing summarizing the workload and potential automations.
+"""
+
+[tools]
+enabled = [
+    "ticktick_get_today",
+    "ticktick_read_summary",
+    "openviking_read_abstract"
+]
+
+[triggers]
+schedule = "0 6 * * *"  # Runs daily at 06:00 AM

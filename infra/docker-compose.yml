@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  openviking:
+    image: volcengine/openviking:latest
+    container_name: maestro_openviking
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - OPENVIKING_ENV=production
+      - VECTOR_STORE=ollama
+      - EMBEDDING_MODEL=nomic-embed-text
+    volumes:
+      - ../data/openfang_db:/app/data
+      - ../data/obsidian_vault:/app/vault:ro
+    networks:
+      - coolify-network
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: maestro_ollama
+    restart: unless-stopped
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - coolify-network
+
+  openfang:
+    image: rightnowai/openfang:latest
+    container_name: maestro_openfang
+    restart: unless-stopped
+    depends_on:
+      - openviking
+    volumes:
+      - ../agents:/app/agents
+      - ../capabilities:/app/capabilities
+      - ../data/openfang_db:/app/db
+      - /var/run/docker.sock:/var/run/docker.sock # Required for operator finops tool
+    environment:
+      - RUST_LOG=info
+      - MCP_GATEWAY_URL=http://mcp_gateway:3000
+    networks:
+      - coolify-network
+
+  mcp_gateway:
+    build: 
+      context: ../capabilities
+      dockerfile: Dockerfile
+    container_name: maestro_mcp_gateway
+    restart: unless-stopped
+    environment:
+      - TICKTICK_CLIENT_ID=${TICKTICK_CLIENT_ID}
+      - TICKTICK_CLIENT_SECRET=${TICKTICK_CLIENT_SECRET}
+    networks:
+      - coolify-network
+
+networks:
+  coolify-network:
+    external: true
+
+volumes:
+  ollama_data:

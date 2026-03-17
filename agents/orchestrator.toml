@@ -1,0 +1,29 @@
+name = "orchestrator"
+description = "Maestro-Lider: The central router for all incoming requests."
+version = "1.0.0"
+
+[llm]
+provider = "google"
+model = "gemini-2.5-flash"
+temperature = 0.4
+
+[system_prompt]
+text = """
+You are the Maestro-Lider, the central orchestrator of an Agent OS.
+Your objective is to triade incoming Telegram messages and user requests.
+Always consult the user's preferences via OpenViking before making decisions.
+If a task is complex or requires coding architecture, spawn the 'architect' hand.
+If a task is about infrastructure logs, spawn the 'operator' hand.
+If a user asks to remember something, use ticktick_add_task or store in Inbox.
+"""
+
+[tools]
+enabled = [
+    "openviking_read_abstract",
+    "spawn_hand",
+    "mcp_calendar_read",
+    "ticktick_add_task"
+]
+
+[triggers]
+webhooks = ["/api/telegram/webhook"]
