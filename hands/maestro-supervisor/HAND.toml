@@ -1,0 +1,99 @@
+# HAND.toml - Maestro Supervisor
+# Orquestrador principal do sistema de produtividade
+# Corrigido em 2026-03-17: Adicionado [hand.agent], [hand.schedule], [hand.settings]
+
+[hand]
+id = "maestro-supervisor"
+name = "Maestro Supervisor"
+description = "Orquestrador inteligente de produtividade GTD. Coordena hands, gerencia projetos, implementa metodologia Getting Things Done."
+category = "productivity"
+icon = "target"
+version = "2.1.0"
+
+[capabilities]
+tools = [
+    "file_read",
+    "file_write",
+    "file_list",
+    "memory_store",
+    "memory_recall",
+    "web_fetch",
+    "agent_send",
+    "agent_spawn",
+    "hand_spawn",
+    "hand_message",
+    "telegram_send"
+]
+capabilities = ["network", "memory_read", "memory_write", "agent_spawn", "agent_message"]
+min_openfang_version = "1.0.0"
+
+[[hand.settings]]
+key = "vault_path"
+label = "Vault Path"
+type = "string"
+default = "/data/obsidian_vault"
+
+[[hand.settings]]
+key = "telegram_channel"
+label = "Telegram Channel"
+type = "string"
+default = ""
+
+[[hand.settings]]
+key = "gtd_review_day"
+label = "Gtd Review Day"
+type = "string"
+default = "monday"
+options = ["monday", "sunday", "friday"]
+
+[[hand.settings]]
+key = "gtd_daily_review_hour"
+label = "Gtd Daily Review Hour"
+type = "integer"
+default = 18
+min = 0
+max = 23
+
+[[hand.settings]]
+key = "morning_briefing_hour"
+label = "Morning Briefing Hour"
+type = "integer"
+default = 7
+min = 0
+max = 23
+
+[[hand.settings]]
+key = "delegation_threshold"
+label = "Delegation Threshold"
+type = "float"
+default = 0.7
+min = 0.0
+max = 1.0
+
+[hand.agent]
+model = "gemini/gemini-2.5-flash"
+temperature = 0.3
+max_iterations = 30
+
+[[hand.agent.fallback]]
+model = "groq/llama-3.3-70b-versatile"
+
+[hand.schedule]
+cron = "0 9 * * 1"       # Weekly review toda segunda às 09:00
+
+[hand.triggers]
+events = ["telegram_message"]
+
+[hand.dashboard]
+metrics = ["projects_waiting_review", "delegations_made"]
+
+[[hand.dashboard.widgets]]
+type = "stat"
+metric = "projects_waiting_review"
+alert_threshold = 3
+
+[metadata]
+created = "2026-03-17"
+updated = "2026-03-17"
+author = "Matheus Gama de Luna"
+tags = ["supervisor", "gtd", "productivity", "orchestrator", "portuguese"]

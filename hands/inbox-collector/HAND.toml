@@ -1,0 +1,97 @@
+# HAND.toml - Inbox Collector
+# Hand especializado em captura rápida e sem fricção de qualquer canal
+# Corrigido em 2026-03-17: Criado o arquivo ausente com estrutura completa
+
+[hand]
+id = "inbox-collector"
+name = "Inbox Collector"
+description = "Captura tarefas, ideias e referências de qualquer canal (Telegram, Email, Webhook) com zero fricção. Salva na Inbox para posterior processamento GTD."
+category = "productivity"
+icon = "inbox"
+version = "1.1.0"
+
+[capabilities]
+tools = [
+    "file_read",
+    "file_write",
+    "file_list",
+    "memory_store",
+    "memory_recall",
+    "web_fetch",
+    "telegram_send",
+    "hand_message"
+]
+capabilities = ["network", "memory_read", "memory_write"]
+min_openfang_version = "1.0.0"
+
+[[hand.settings]]
+key = "vault_inbox_path"
+label = "Vault Inbox Path"
+type = "string"
+default = "/data/obsidian_vault/01-Inbox"
+
+[[hand.settings]]
+key = "notification_format"
+label = "Notification Format"
+type = "string"
+default = "detailed"
+options = ["silent", "minimal", "detailed"]
+
+[[hand.settings]]
+key = "auto_classify"
+label = "Auto Classify"
+type = "bool"
+default = true
+
+[[hand.settings]]
+key = "whisper_confidence_threshold"
+label = "Whisper Confidence Threshold"
+type = "float"
+default = 0.85
+min = 0.5
+max = 1.0
+
+[[hand.settings]]
+key = "channels"
+label = "Channels"
+type = "array"
+default = ["telegram", "webhook"]
+
+[[hand.settings]]
+key = "email_inbox_filter"
+label = "Email Inbox Filter"
+type = "string"
+default = "[INBOX]"
+
+[hand.agent]
+model = "groq/llama-3.1-8b-instant"
+temperature = 0.1
+max_iterations = 10
+
+[[hand.agent.fallback]]
+model = "gemini/gemini-2.0-flash"
+
+[hand.triggers]
+# Roda on-demand via gatilhos de evento
+events = ["telegram_message", "webhook_received", "email_received"]
+webhook_path = "/hooks/inbox-capture"
+
+[hand.dashboard]
+metrics = ["captures_processed", "transcription_errors", "classification_confidence"]
+
+[[hand.dashboard.widgets]]
+type = "chart"
+metric = "captures_processed"
+period = "7d"
+style = "bar"
+
+[[hand.dashboard.widgets]]
+type = "stat"
+metric = "transcription_errors"
+alert_threshold = 5
+
+[metadata]
+created = "2026-03-17"
+updated = "2026-03-17"
+author = "Matheus Gama de Luna"
+tags = ["inbox", "capture", "gtd", "telegram", "productivity", "portuguese"]

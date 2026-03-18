@@ -1,0 +1,89 @@
+# HAND.toml - Project Manager
+# Hand especializado em gestão de projetos ativos
+# Corrigido em 2026-03-17: Removidas tools fictícias, adicionado [hand.agent], [hand.schedule], [hand.settings]
+
+[hand]
+id = "project-manager"
+name = "Project Manager"
+description = "Gerencia projetos ativos com outcomes claros, progresso visível e próxima ação definida. Usa LLM para análise e shell_exec para operações de YAML."
+category = "productivity"
+icon = "bar_chart"
+version = "1.1.0"
+
+[capabilities]
+tools = [
+    "file_read",
+    "file_write",
+    "file_move",
+    "file_list",
+    "shell_exec",
+    "memory_store",
+    "memory_recall",
+    "hand_message",
+    "hand_spawn",
+    "telegram_send"
+]
+capabilities = ["network", "memory_read", "memory_write"]
+min_openfang_version = "1.0.0"
+
+# Notas:
+# - progress_calculator, stale_detector, yaml_frontmatter_extract, yaml_frontmatter_update
+#   foram removidas (não existem no OpenFang)
+# - Cálculo de progresso e YAML parsing feito via shell_exec + scripts/vault_ops.py
+# - Detecção de projetos stale feita via raciocínio do LLM sobre datas no frontmatter
+
+[[hand.settings]]
+key = "vault_path"
+label = "Vault Path"
+type = "string"
+default = "/data/obsidian_vault"
+
+[[hand.settings]]
+key = "projects_path"
+label = "Projects Path"
+type = "string"
+default = "/data/obsidian_vault/02-Projects"
+
+[[hand.settings]]
+key = "archive_path"
+label = "Archive Path"
+type = "string"
+default = "/data/obsidian_vault/05-Archive"
+
+[[hand.settings]]
+key = "stale_days_threshold"
+label = "Stale Days Threshold"
+type = "integer"
+default = 7
+min = 1
+max = 30
+
+[[hand.settings]]
+key = "areas"
+label = "Areas"
+type = "array"
+default = ["wappv", "voltz", "dek", "pessoal", "dev", "learning"]
+
+[[hand.settings]]
+key = "scripts_path"
+label = "Scripts Path"
+type = "string"
+default = "/data/openfang/scripts"
+
+[hand.agent]
+model = "gemini/gemini-2.5-flash"
+temperature = 0.2
+max_iterations = 25
+
+[[hand.agent.fallback]]
+model = "groq/llama-3.3-70b-versatile"
+
+[hand.schedule]
+cron = "0 9 * * 1"    # Weekly review toda segunda às 09:00
+on_event = ["hand_invoke"]
+
+[metadata]
+created = "2026-03-17"
+updated = "2026-03-17"
+author = "Matheus Gama de Luna"
+tags = ["projects", "management", "gtd", "productivity", "portuguese"]

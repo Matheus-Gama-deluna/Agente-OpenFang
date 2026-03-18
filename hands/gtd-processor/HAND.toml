@@ -1,0 +1,133 @@
+# HAND.toml - GTD Processor
+# Hand especializado em processamento GTD (Process, Organize, Review)
+# Corrigido em 2026-03-17: Removidas tools fictícias, adicionado [hand.agent], [hand.schedule], [hand.settings]
+
+[hand]
+id = "gtd-processor"
+name = "GTD Processor"
+description = "Processa itens da Inbox usando metodologia GTD pura. Clarifica, organiza, revisa. Usa raciocínio do LLM para classificação e shell_exec para operações de arquivo."
+category = "productivity"
+icon = "settings"
+version = "1.1.0"
+
+[capabilities]
+tools = [
+    "file_read",
+    "file_write",
+    "file_move",
+    "file_list",
+    "shell_exec",
+    "memory_store",
+    "memory_recall",
+    "hand_message",
+    "hand_spawn",
+    "telegram_send"
+]
+capabilities = ["network", "memory_read", "memory_write"]
+min_openfang_version = "1.0.0"
+
+# Notas:
+# - intent_classifier_gtd, action_extractor, project_detector, context_assigner,
+#   outcome_formulator, stale_detector foram removidos (não existem no OpenFang)
+# - A classificação GTD é feita via raciocínio do LLM no system-prompt.md
+# - Operações de YAML frontmatter são feitas via shell_exec + scripts/vault_ops.py
+
+[[hand.settings]]
+key = "vault_path"
+label = "Vault Path"
+type = "string"
+default = "/data/obsidian_vault"
+
+[[hand.settings]]
+key = "inbox_path"
+label = "Inbox Path"
+type = "string"
+default = "/data/obsidian_vault/01-Inbox"
+
+[[hand.settings]]
+key = "actions_path"
+label = "Actions Path"
+type = "string"
+default = "/data/obsidian_vault/03-Areas"
+
+[[hand.settings]]
+key = "projects_path"
+label = "Projects Path"
+type = "string"
+default = "/data/obsidian_vault/02-Projects"
+
+[[hand.settings]]
+key = "resources_path"
+label = "Resources Path"
+type = "string"
+default = "/data/obsidian_vault/04-Resources"
+
+[[hand.settings]]
+key = "archive_path"
+label = "Archive Path"
+type = "string"
+default = "/data/obsidian_vault/05-Archive"
+
+[[hand.settings]]
+key = "two_minute_rule"
+label = "Two Minute Rule"
+type = "bool"
+default = true
+
+[[hand.settings]]
+key = "stale_days_threshold"
+label = "Stale Days Threshold"
+type = "integer"
+default = 7
+min = 1
+max = 30
+
+[[hand.settings]]
+key = "daily_review_hour"
+label = "Daily Review Hour"
+type = "integer"
+default = 18
+min = 0
+max = 23
+
+[[hand.settings]]
+key = "scripts_path"
+label = "Scripts Path"
+type = "string"
+default = "/data/openfang/scripts"
+
+[hand.agent]
+model = "groq/llama-3.3-70b-versatile"
+temperature = 0.2
+max_iterations = 40
+
+[[hand.agent.fallback]]
+model = "gemini/gemini-2.5-flash"
+
+[hand.schedule]
+cron = "0 18 * * *"    # Revisão diária às 18:00
+
+[hand.chain]
+# Roda imediatamente após captura para limpar inbox
+after = ["inbox-collector"]
+input_from = "inbox-collector.output_path"
+
+[hand.dashboard]
+metrics = ["items_processed", "projects_created", "trash_dumped"]
+
+[[hand.dashboard.widgets]]
+type = "stat"
+metric = "inbox_zero_streak" 
+style = "success"
+
+[[hand.dashboard.widgets]]
+type = "chart"
+metric = "items_processed"
+period = "7d"
+style = "bar"
+
+[metadata]
+created = "2026-03-17"
+updated = "2026-03-17"
+author = "Matheus Gama de Luna"
+tags = ["gtd", "process", "organize", "review", "productivity", "portuguese"]

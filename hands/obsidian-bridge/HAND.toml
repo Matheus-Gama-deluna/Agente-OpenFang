@@ -1,0 +1,104 @@
+# HAND.toml - Obsidian Bridge
+# Hand especializado em memória vetorial e busca semântica
+# Corrigido em 2026-03-17: Ferramentas fictícias substituídas por web_fetch (Ollama API) e shell_exec
+
+[hand]
+id = "obsidian-bridge"
+name = "Obsidian Bridge"
+description = "Ponte entre Obsidian Vault e sistema de agentes. Indexa notas, provê busca semântica via Ollama API local (nomic-embed-text). Zero tokens de LLM na busca."
+category = "productivity"
+icon = "search"
+version = "1.1.0"
+
+[capabilities]
+tools = [
+    "file_read",
+    "file_list",
+    "shell_exec",
+    "web_fetch",
+    "memory_store",
+    "memory_recall",
+    "hand_message"
+]
+capabilities = ["network_local", "memory_read", "memory_write"]
+min_openfang_version = "1.0.0"
+
+# Notas sobre substituição de ferramentas:
+# - vector_search → shell_exec com scripts/vault_ops.py search
+# - embedding_generate → web_fetch para http://localhost:11434/api/embed
+# - similarity_search → implementado em scripts/vault_ops.py (cosine similarity)
+# - link_suggester → LLM reasoning no system-prompt.md após busca semântica
+# - duplicate_detector → memory_recall + LLM comparison
+# - cache_set/cache_get → memory_store/memory_recall (equivalente)
+
+[[hand.settings]]
+key = "vault_path"
+label = "Vault Path"
+type = "string"
+default = "/data/obsidian_vault"
+
+[[hand.settings]]
+key = "ollama_base_url"
+label = "Ollama Base Url"
+type = "string"
+default = "http://localhost:11434"
+
+[[hand.settings]]
+key = "embedding_model"
+label = "Embedding Model"
+type = "string"
+default = "nomic-embed-text"
+
+[[hand.settings]]
+key = "top_k_results"
+label = "Top K Results"
+type = "integer"
+default = 5
+min = 1
+max = 20
+
+[[hand.settings]]
+key = "similarity_threshold"
+label = "Similarity Threshold"
+type = "float"
+default = 0.70
+min = 0.0
+max = 1.0
+
+[[hand.settings]]
+key = "index_path"
+label = "Index Path"
+type = "string"
+default = "/data/openfang/obsidian_index"
+
+[[hand.settings]]
+key = "scripts_path"
+label = "Scripts Path"
+type = "string"
+default = "/data/openfang/scripts"
+
+[[hand.settings]]
+key = "reindex_interval_hours"
+label = "Reindex Interval Hours"
+type = "integer"
+default = 24
+min = 1
+max = 168
+
+[hand.agent]
+model = "groq/llama-3.1-8b-instant"
+temperature = 0.1
+max_iterations = 15
+
+[[hand.agent.fallback]]
+model = "gemini/gemini-2.0-flash"
+
+[hand.schedule]
+cron = "0 3 * * *"    # Reindexação automática às 03:00
+on_event = ["hand_invoke"]
+
+[metadata]
+created = "2026-03-17"
+updated = "2026-03-17"
+author = "Matheus Gama de Luna"
+tags = ["obsidian", "vector", "search", "embeddings", "memory", "portuguese", "ollama"]
