@@ -22,7 +22,7 @@
 ### Dependências
 | Serviço | Status | Latência |
 |---------|--------|----------|
-| OpenViking | ✅ OK | 45ms |
+| Obsidian-Bridge (Ollama) | ✅ OK | 45ms |
 | Telegram API | ✅ OK | 120ms |
 | TickTick API | ✅ OK | 180ms |
 | Google API | ✅ OK | 95ms |
@@ -36,7 +36,7 @@
 - Synchronizer: ✅ Respondeu em 35ms
 
 ### Para Sistemas Externos
-- OpenViking: ✅ Última sincronização: 5 min atrás
+- Obsidian-Bridge: ✅ Modelo nomic-embed respondendo localmente
 - Telegram: ✅ Webhook ativo
 - TickTick: ✅ Conexão estabelecida
 
@@ -67,14 +67,14 @@ Todos os sistemas operando normalmente.
 Um ou mais agentes subordinados indisponíveis, mas core funcionando.
 
 ### 🔴 Critical
-Falha crítica em dependência essencial (ex: OpenViking).
+Falha crítica em dependência essencial (ex: Banco local, Ollama fora do ar).
 
 ## Histórico de Eventos
 
 ```
 2025-03-17 11:00:00 - Boot iniciado
 2025-03-17 11:00:05 - Config carregada
-2025-03-17 11:00:10 - OpenViking conectado
+2025-03-17 11:00:10 - Obsidian-Bridge (Ollama) OK
 2025-03-17 11:00:15 - Agentes registrados
 2025-03-17 11:00:20 - READY
 ```

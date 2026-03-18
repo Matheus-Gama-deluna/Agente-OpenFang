@@ -24,26 +24,23 @@ Resposta: "De acordo com [fonte], o último filme..."
 
 ---
 
-### Long-Term Memory (OpenViking)
-**Tipo:** Base vetorial persistente  
+### Long-Term Memory (Obsidian-Bridge)
+**Tipo:** Base vetorial persistente local (Zettelkasten)  
 **Retenção:** Permanente  
-**Acesso:** Via `openviking_read_abstract`  
+**Acesso:** Via `hand_spawn` no hand `obsidian-bridge` (ação `search`)  
 
 **O que armazena:**
-- Preferências do usuário
-- Histórico de decisões importantes
-- Padrões de interação
-- Configurações de projetos
-- Resumos de análises anteriores
+- Notas e projetos armazenados em `/02-Projects/` e `/03-Areas/Zettelkasten/`
+- Preferências documentadas em `/99-Config/`
+- Registros perenes e memórias consolidadas
 
-**Namespace:** `orchestrator/context`  
-
-**Exemplo de query:**
-```python
-openviking_read_abstract(
-  query="preferências usuário sobre comunicação",
-  namespace="orchestrator/context"
-)
+**Exemplo de delegação de busca:**
+```json
+{
+  "action": "search",
+  "query": "preferências do usuário sobre comunicação",
+  "top_k": 3
+}
 ```
 
 ---
@@ -55,10 +52,11 @@ openviking_read_abstract(
 - Fatos importantes são extraídos automaticamente
 - Contexto é mantido na janela de contexto
 
-### 2. Processamento
-- Agente Archivist processa a cada 4 horas
-- Formata em Zettelkasten
-- Salva em OpenViking com embeddings
+### 2. Processamento (Geração LTM)
+- O Orchestrator não gera memória de longo prazo sozinho.
+- Ele envia sínteses valiosas para a base capturando via `inbox-collector`
+- Em background, o Archivist ou GTD-Processor processam as notas
+- O Hand `obsidian-bridge` indexa continuamente essas notas usando `nomic-embed-text` (Ollama local).
 
 ### 3. Recuperação
 - Orchestrator consulta memória antes de decisões
@@ -75,16 +73,15 @@ openviking_read_abstract(
 ### Leitura
 ```
 1. Verificar contexto atual (short-term)
-2. Se insuficiente, buscar em OpenViking (long-term)
+2. Se insuficiente, invocar obsidian-bridge (long-term)
 3. Combinar contextos para decisão informada
 ```
 
-### Escrita (via Archivist)
+### Escrita (via Inbox-Collector / Archivist)
 ```
-1. Enviar resumo para Archivist
-2. Archivist formata como Zettelkasten
-3. Persiste em OpenViking
-4. Retorna ID da nota
+1. Enviar insight vital para o inbox-collector
+2. Archivist (quando engatilhado) processa para /03-Areas/Zettelkasten/
+3. Bridge indexa a nota
 ```
 
 ## Contexto Retido
@@ -107,7 +104,6 @@ openviking_read_abstract(
 - Após 7 dias, detalhes vão para long-term storage
 - Short-term mantém apenas contexto ativo
 
-### Cache de Consultas
-- Resultados de `openviking_read` são cacheados por 5 min
-- Evita múltiplas consultas idênticas
-- Invalidado quando Archivist escreve nova nota
+### Cache de Consultas Internas
+- Resultados do `obsidian-bridge` dependem do contexto da conversa
+- A resposta do modelo local é livre de custos de API

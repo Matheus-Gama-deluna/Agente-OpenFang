@@ -12,8 +12,8 @@
 
 ### Passo 2: Setup de Memória
 ```
-1. Conectar ao OpenViking
-2. Verificar namespace "orchestrator/context"
+1. Verificar integridade do obsidian-bridge
+2. Ping em http://localhost:11434 (Ollama)
 3. Carregar cache de contexto recente
 4. Validar integridade
 ```
@@ -58,14 +58,14 @@
 
 ### Checklist de Inicialização
 - [ ] Configuração válida
-- [ ] Conexão OpenViking OK
-- [ ] Credenciais MCP válidas
+- [ ] Conexão local Ollama/Bridge OK
+- [ ] Credenciais válidas (Gemini, Groq)
 - [ ] Webhooks respondendo
 - [ ] Agentes subordinados detectados
 - [ ] Memória acessível
 
 ### Fallbacks
-- Se OpenViking indisponível: operar sem memória de longo prazo
+- Se Obsidian-Bridge indisponível: operar sem recuperação de longo prazo, relying só no contexto
 - Se webhook falhar: operar em modo polling
 - Se agente subordinado não encontrado: ignorar, não falhar
 
@@ -73,9 +73,9 @@
 
 ```
 [INFO] Orchestrator boot iniciado
-[INFO] Config carregada: agents/orchestrator/HAND.toml
-[INFO] OpenViking conectado
-[INFO] 4 agentes subordinados registrados
+[INFO] Config carregada: agents/orchestrator/agent.toml
+[INFO] Obsidian-Bridge inicializado
+[INFO] 4 agentes e 4 hands de produtividade detectados
 [INFO] Webhooks ativos
 [INFO] READY para processar requests
 ```
