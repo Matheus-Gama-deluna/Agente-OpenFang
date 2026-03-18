@@ -34,21 +34,25 @@ min_openfang_version = "1.0.0"
 
 [[hand.settings]]
 key = "vault_path"
+label = "Vault Path"
 type = "string"
 default = "/data/obsidian_vault"
 
 [[hand.settings]]
 key = "projects_path"
+label = "Projects Path"
 type = "string"
 default = "/data/obsidian_vault/02-Projects"
 
 [[hand.settings]]
 key = "archive_path"
+label = "Archive Path"
 type = "string"
 default = "/data/obsidian_vault/05-Archive"
 
 [[hand.settings]]
 key = "stale_days_threshold"
+label = "Stale Days Threshold"
 type = "integer"
 default = 7
 min = 1
@@ -56,11 +60,13 @@ max = 30
 
 [[hand.settings]]
 key = "areas"
+label = "Areas"
 type = "array"
 default = ["wappv", "voltz", "dek", "pessoal", "dev", "learning"]
 
 [[hand.settings]]
 key = "scripts_path"
+label = "Scripts Path"
 type = "string"
 default = "/data/openfang/scripts"
 

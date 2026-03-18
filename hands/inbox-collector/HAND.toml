@@ -26,22 +26,26 @@ min_openfang_version = "1.0.0"
 
 [[hand.settings]]
 key = "vault_inbox_path"
+label = "Vault Inbox Path"
 type = "string"
 default = "/data/obsidian_vault/01-Inbox"
 
 [[hand.settings]]
 key = "notification_format"
+label = "Notification Format"
 type = "string"
 default = "detailed"
 options = ["silent", "minimal", "detailed"]
 
 [[hand.settings]]
 key = "auto_classify"
+label = "Auto Classify"
 type = "bool"
 default = true
 
 [[hand.settings]]
 key = "whisper_confidence_threshold"
+label = "Whisper Confidence Threshold"
 type = "float"
 default = 0.85
 min = 0.5
@@ -49,11 +53,13 @@ max = 1.0
 
 [[hand.settings]]
 key = "channels"
+label = "Channels"
 type = "array"
 default = ["telegram", "webhook"]
 
 [[hand.settings]]
 key = "email_inbox_filter"
+label = "Email Inbox Filter"
 type = "string"
 default = "[INBOX]"
 

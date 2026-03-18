@@ -34,41 +34,49 @@ min_openfang_version = "1.0.0"
 
 [[hand.settings]]
 key = "vault_path"
+label = "Vault Path"
 type = "string"
 default = "/data/obsidian_vault"
 
 [[hand.settings]]
 key = "inbox_path"
+label = "Inbox Path"
 type = "string"
 default = "/data/obsidian_vault/01-Inbox"
 
 [[hand.settings]]
 key = "actions_path"
+label = "Actions Path"
 type = "string"
 default = "/data/obsidian_vault/03-Areas"
 
 [[hand.settings]]
 key = "projects_path"
+label = "Projects Path"
 type = "string"
 default = "/data/obsidian_vault/02-Projects"
 
 [[hand.settings]]
 key = "resources_path"
+label = "Resources Path"
 type = "string"
 default = "/data/obsidian_vault/04-Resources"
 
 [[hand.settings]]
 key = "archive_path"
+label = "Archive Path"
 type = "string"
 default = "/data/obsidian_vault/05-Archive"
 
 [[hand.settings]]
 key = "two_minute_rule"
+label = "Two Minute Rule"
 type = "bool"
 default = true
 
 [[hand.settings]]
 key = "stale_days_threshold"
+label = "Stale Days Threshold"
 type = "integer"
 default = 7
 min = 1
@@ -76,6 +84,7 @@ max = 30
 
 [[hand.settings]]
 key = "daily_review_hour"
+label = "Daily Review Hour"
 type = "integer"
 default = 18
 min = 0
@@ -83,6 +92,7 @@ max = 23
 
 [[hand.settings]]
 key = "scripts_path"
+label = "Scripts Path"
 type = "string"
 default = "/data/openfang/scripts"
 
