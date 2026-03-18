@@ -10,7 +10,7 @@ category = "productivity"
 icon = "target"
 version = "2.1.0"
 
-[hand.requires]
+[[hand.requires]]
 tools = [
     "file_read",
     "file_write",

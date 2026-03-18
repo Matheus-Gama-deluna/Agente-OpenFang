@@ -10,7 +10,7 @@ category = "productivity"
 icon = "inbox"
 version = "1.1.0"
 
-[hand.requires]
+[[hand.requires]]
 tools = [
     "file_read",
     "file_write",
