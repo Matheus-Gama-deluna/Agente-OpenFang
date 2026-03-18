@@ -32,17 +32,59 @@ min_openfang_version = "1.0.0"
 # - A classificação GTD é feita via raciocínio do LLM no system-prompt.md
 # - Operações de YAML frontmatter são feitas via shell_exec + scripts/vault_ops.py
 
-[hand.settings]
-vault_path = { type = "string", default = "/data/obsidian_vault" }
-inbox_path = { type = "string", default = "/data/obsidian_vault/01-Inbox" }
-actions_path = { type = "string", default = "/data/obsidian_vault/03-Areas" }
-projects_path = { type = "string", default = "/data/obsidian_vault/02-Projects" }
-resources_path = { type = "string", default = "/data/obsidian_vault/04-Resources" }
-archive_path = { type = "string", default = "/data/obsidian_vault/05-Archive" }
-two_minute_rule = { type = "bool", default = true }
-stale_days_threshold = { type = "integer", default = 7, min = 1, max = 30 }
-daily_review_hour = { type = "integer", default = 18, min = 0, max = 23 }
-scripts_path = { type = "string", default = "/data/openfang/scripts" }
+[[hand.settings]]
+key = "vault_path"
+type = "string"
+default = "/data/obsidian_vault"
+
+[[hand.settings]]
+key = "inbox_path"
+type = "string"
+default = "/data/obsidian_vault/01-Inbox"
+
+[[hand.settings]]
+key = "actions_path"
+type = "string"
+default = "/data/obsidian_vault/03-Areas"
+
+[[hand.settings]]
+key = "projects_path"
+type = "string"
+default = "/data/obsidian_vault/02-Projects"
+
+[[hand.settings]]
+key = "resources_path"
+type = "string"
+default = "/data/obsidian_vault/04-Resources"
+
+[[hand.settings]]
+key = "archive_path"
+type = "string"
+default = "/data/obsidian_vault/05-Archive"
+
+[[hand.settings]]
+key = "two_minute_rule"
+type = "bool"
+default = true
+
+[[hand.settings]]
+key = "stale_days_threshold"
+type = "integer"
+default = 7
+min = 1
+max = 30
+
+[[hand.settings]]
+key = "daily_review_hour"
+type = "integer"
+default = 18
+min = 0
+max = 23
+
+[[hand.settings]]
+key = "scripts_path"
+type = "string"
+default = "/data/openfang/scripts"
 
 [hand.agent]
 model = "groq/llama-3.3-70b-versatile"

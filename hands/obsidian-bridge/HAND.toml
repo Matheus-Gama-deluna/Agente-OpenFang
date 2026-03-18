@@ -31,15 +31,51 @@ min_openfang_version = "1.0.0"
 # - duplicate_detector → memory_recall + LLM comparison
 # - cache_set/cache_get → memory_store/memory_recall (equivalente)
 
-[hand.settings]
-vault_path = { type = "string", default = "/data/obsidian_vault" }
-ollama_base_url = { type = "string", default = "http://localhost:11434" }
-embedding_model = { type = "string", default = "nomic-embed-text" }
-top_k_results = { type = "integer", default = 5, min = 1, max = 20 }
-similarity_threshold = { type = "float", default = 0.70, min = 0.0, max = 1.0 }
-index_path = { type = "string", default = "/data/openfang/obsidian_index" }
-scripts_path = { type = "string", default = "/data/openfang/scripts" }
-reindex_interval_hours = { type = "integer", default = 24, min = 1, max = 168 }
+[[hand.settings]]
+key = "vault_path"
+type = "string"
+default = "/data/obsidian_vault"
+
+[[hand.settings]]
+key = "ollama_base_url"
+type = "string"
+default = "http://localhost:11434"
+
+[[hand.settings]]
+key = "embedding_model"
+type = "string"
+default = "nomic-embed-text"
+
+[[hand.settings]]
+key = "top_k_results"
+type = "integer"
+default = 5
+min = 1
+max = 20
+
+[[hand.settings]]
+key = "similarity_threshold"
+type = "float"
+default = 0.70
+min = 0.0
+max = 1.0
+
+[[hand.settings]]
+key = "index_path"
+type = "string"
+default = "/data/openfang/obsidian_index"
+
+[[hand.settings]]
+key = "scripts_path"
+type = "string"
+default = "/data/openfang/scripts"
+
+[[hand.settings]]
+key = "reindex_interval_hours"
+type = "integer"
+default = 24
+min = 1
+max = 168
 
 [hand.agent]
 model = "groq/llama-3.1-8b-instant"

@@ -32,13 +32,37 @@ min_openfang_version = "1.0.0"
 # - Cálculo de progresso e YAML parsing feito via shell_exec + scripts/vault_ops.py
 # - Detecção de projetos stale feita via raciocínio do LLM sobre datas no frontmatter
 
-[hand.settings]
-vault_path = { type = "string", default = "/data/obsidian_vault" }
-projects_path = { type = "string", default = "/data/obsidian_vault/02-Projects" }
-archive_path = { type = "string", default = "/data/obsidian_vault/05-Archive" }
-stale_days_threshold = { type = "integer", default = 7, min = 1, max = 30 }
-areas = { type = "array", default = ["wappv", "voltz", "dek", "pessoal", "dev", "learning"] }
-scripts_path = { type = "string", default = "/data/openfang/scripts" }
+[[hand.settings]]
+key = "vault_path"
+type = "string"
+default = "/data/obsidian_vault"
+
+[[hand.settings]]
+key = "projects_path"
+type = "string"
+default = "/data/obsidian_vault/02-Projects"
+
+[[hand.settings]]
+key = "archive_path"
+type = "string"
+default = "/data/obsidian_vault/05-Archive"
+
+[[hand.settings]]
+key = "stale_days_threshold"
+type = "integer"
+default = 7
+min = 1
+max = 30
+
+[[hand.settings]]
+key = "areas"
+type = "array"
+default = ["wappv", "voltz", "dek", "pessoal", "dev", "learning"]
+
+[[hand.settings]]
+key = "scripts_path"
+type = "string"
+default = "/data/openfang/scripts"
 
 [hand.agent]
 model = "gemini/gemini-2.5-flash"
