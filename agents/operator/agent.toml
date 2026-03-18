@@ -1,7 +1,6 @@
 # Operator - Agente DevOps
 # Nível 4 -- Rápido | Agente DevOps para diagnósticos e operações
 
-[agent]
 name = "operator"
 version = "1.0.0"
 description = "Agente DevOps. Monitora sistemas, executa diagnósticos e auxilia em implantações em português brasileiro."

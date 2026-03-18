@@ -40,9 +40,24 @@ max_iterations = 10
 [[hand.agent.fallback]]
 model = "gemini/gemini-2.0-flash"
 
-[hand.schedule]
-# Roda on-demand quando invocado por canal ou maestro-supervisor
-on_event = ["telegram_message", "webhook_post", "email_inbox"]
+[hand.triggers]
+# Roda on-demand via gatilhos de evento
+events = ["telegram_message", "webhook_received", "email_received"]
+webhook_path = "/hooks/inbox-capture"
+
+[hand.dashboard]
+metrics = ["captures_processed", "transcription_errors", "classification_confidence"]
+
+[[hand.dashboard.widgets]]
+type = "chart"
+metric = "captures_processed"
+period = "7d"
+style = "bar"
+
+[[hand.dashboard.widgets]]
+type = "stat"
+metric = "transcription_errors"
+alert_threshold = 5
 
 [metadata]
 created = "2026-03-17"

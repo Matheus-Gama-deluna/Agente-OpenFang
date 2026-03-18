@@ -45,7 +45,17 @@ model = "groq/llama-3.3-70b-versatile"
 
 [hand.schedule]
 cron = "0 9 * * 1"       # Weekly review toda segunda às 09:00
-on_event = ["telegram_message"]
+
+[hand.triggers]
+events = ["telegram_message"]
+
+[hand.dashboard]
+metrics = ["projects_waiting_review", "delegations_made"]
+
+[[hand.dashboard.widgets]]
+type = "stat"
+metric = "projects_waiting_review"
+alert_threshold = 3
 
 [metadata]
 created = "2026-03-17"

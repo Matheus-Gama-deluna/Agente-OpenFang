@@ -2,7 +2,6 @@
 # Nível 3 -- Equilibrado | Processador de conhecimento e Zettelkasten
 # Fallback: gemini/gemini-2.0-flash
 
-[agent]
 name = "archivist"
 version = "1.0.0"
 description = "Processa resumos de interações, formata notas Zettelkasten e gerencia a base de conhecimento em português brasileiro."

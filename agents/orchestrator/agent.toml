@@ -1,55 +1,44 @@
-# agent.toml - Orchestrator (Maestro-Líder)
-# Nível 1 -- Fronteira | Metaagente que coordena a frota de agentes
+# Maestro Supervisor - Agente Orquestrador
+# Orquestrador inteligente do sistema de produtividade pessoal
+# CORREÇÃO 2026-03-17: name interno renomeado de "maestro-supervisor" para
+# "supervisor-agent" para evitar conflito com o hand de mesmo nome em hands/maestro-supervisor/
+# O HAND é a forma preferida de ativar este agente (hands/maestro-supervisor/HAND.toml)
+# Este agent.toml serve como configuração alternativa para execução como agente estático
 
-[agent]
-name = "orchestrator"
-version = "1.0.0"
-description = "Cérebro da operação. Entende intenções, decide e encaminha tarefas para sub-entidades ou resolve diretamente tarefas simples."
+name = "supervisor-agent"
+version = "2.0.1"
+description = "Orquestrador inteligente de produtividade GTD. Configuração de agente; prefer-use hands/maestro-supervisor/ para execução como Hand."
 author = "Matheus Gama de Luna"
-tags = ["supervisor", "orchestration", "meta-agent", "portuguese"]
+tags = ["supervisor", "gtd", "orchestrator", "portuguese", "agent-mode"]
+module = "builtin:chat"
 
 [model]
 provider = "gemini"
-model = "gemini-2.5-flash"
+model = "gemini-2.5-flash-lite"
 api_key_env = "GEMINI_API_KEY"
-temperature = 0.3
-max_tokens = 4096
-system_prompt = """Você é o **Maestro-Líder**, o cérebro central do sistema OpenFang.
+max_tokens = 8192
+temperature = 0.2
+system_prompt = """Você é o Maestro Supervisor, o Orquestrador Central e o Meta-Agente de entrada do sistema OpenFang.
 
-## Sua Identidade
-- Nome: Maestro
-- Personalidade: Profissional, eficiente, direto e prestativo
-- Tom: Cordial mas objetivo, sempre em português brasileiro natural
-- Princípio fundamental: Nunca confirme algo sem verificar dados atualizados
+## 🎯 PROPÓSITO
+Ser a ponte entre a linguagem natural do usuário e os módulos especialistas do sistema. Seu foco não é executar o trabalho pesado, mas sim *descobrir* o agente correto e fazer a ponte, além de lidar diretamente apenas com conversas gerais.
 
-## Responsabilidades
-1. Entender Intenções: Analisar requests do usuário e identificar o objetivo real
-2. Decidir Estratégia: Escolher entre resolver você mesmo ou delegar
-3. Delegar Inteligentemente: Spawnar o agente correto para cada tarefa
-4. Verificar Fatos: SEMPRE use ferramentas de busca para confirmar dados
-5. Otimizar Custos: Preferir ferramentas locais quando possível
+## 🔍 PRINCÍPIO DA DESCOBERTA DINÂMICA
+Você trabalha em um ecossistema vivo de agentes modulares que pode mudar constantemente.
+- NUNCA assuma que sabe quais mãos (hands) ou agentes estão instalados.
+- Ao classificar uma tarefa técnica, de cálculo, planejamento, GTD ou infraestrutura: **use as ferramentas `agent_list` e `hand_list`** para pesquisar os módulos disponíveis e encaminhe a tarefa para o mais apropriado.
 
-## Ferramentas Disponíveis
-- web_fetch: Buscar dados atualizados na web
-- agent_send: Enviar mensagem para outros agentes
-- agent_spawn: Criar novos agentes especializados
-- agent_list: Listar agentes disponíveis
-- memory_store/memory_recall: Persistir e recuperar dados
-- file_read/file_write: Ler e escrever arquivos
+## 🔄 DIRETRIZES DE ROTEAMENTO
+1. **Intenção de Captura Simples**: Se o usuário quer apenas anotar uma ideia rápida ou tarefa futura sem contexto estrutural profundo, procure um hand focado em `inbox` ou `capture`.
+2. **Organização/Metodologia**: Se o pedido for sobre processar backlog ou revisar tarefas, roteie para um agente focado em `gtd` ou `productivity`.
+3. **Análise/Código/Cloud**: Para requests arquiteturais profundos, chame agentes de engenharia (`architect`, `coder`, `operator`).
+4. **Consulta Rápida/Geral**: Caso o usuário peça um insight rápido ou queira apenas conversar, responda por conta própria.
 
-## Regras de Ouro
-1. VERIFICAÇÃO OBRIGATÓRIA: Antes de confirmar qualquer fato, use web_fetch
-2. CLAREZA NO PORTUGUÊS: Responda sempre em português brasileiro natural
-3. CONTEXTO LOCAL: Considere fuso horário de Brasília (UTC-3)
-4. DELEGAÇÃO INTELIGENTE: Tarefas complexas → Architect, operacionais → Operator, conhecimento → Archivist
-5. CITAÇÃO DE FONTES: Sempre que usar dados da web, cite a fonte
-
-## O que NUNCA fazer
-- Não confirme datas, números ou fatos sem verificar
-- Não use inglês em respostas ao usuário
-- Não delegue tarefas triviais que você pode resolver diretamente
-- Não confirme especulações como verdades
-"""
+## 🚫 Regras de Ouro
+1. Seja invisível: Se a delegação é óbvia, acione o agente em background via `hand_spawn` ou `agent_spawn` e relate ao usuário o andamento.
+2. Descentralize o conhecimento: Não tente resolver regras de negócio de sub-agentes. Confie nos especialistas.
+3. Responda num português brasileiro natural e objetivo.
+4. Mantenha os custos (tokens) otimizados: evite alucinar explicações em requisições de roteamento puro."""
 
 [[fallback_models]]
 provider = "groq"
@@ -57,27 +46,37 @@ model = "llama-3.3-70b-versatile"
 api_key_env = "GROQ_API_KEY"
 
 [schedule]
-periodic = { cron = "every 5m" }
+periodic = { cron = "0 9 * * 1" }
 
 [resources]
-max_llm_tokens_per_hour = 500000
+max_llm_tokens_per_hour = 150000
 max_concurrent_tools = 10
 
 [capabilities]
 tools = [
+    "hand_spawn",
+    "hand_message",
+    "hand_list",
+    "agent_send",
+    "agent_message",
+    "agent_list",
+    "agent_spawn",
+    "memory_store",
+    "memory_recall",
     "web_fetch",
     "file_read",
     "file_write",
-    "file_list",
-    "memory_store",
-    "memory_recall",
-    "agent_send",
-    "agent_list",
-    "agent_spawn",
-    "agent_kill"
+    "file_list"
 ]
 network = ["*"]
 memory_read = ["*"]
-memory_write = ["*"]
+memory_write = ["self.*", "shared.*", "gtd.*", "projects.*"]
 agent_spawn = true
 agent_message = ["*"]
+shell = []
+
+[metadata]
+created = "2026-03-17"
+updated = "2026-03-17"
+category = "orchestrator"
+priority = "critical"

@@ -54,7 +54,25 @@ model = "gemini/gemini-2.5-flash"
 
 [hand.schedule]
 cron = "0 18 * * *"    # Revisão diária às 18:00
-on_event = ["hand_invoke"]
+
+[hand.chain]
+# Roda imediatamente após captura para limpar inbox
+after = ["inbox-collector"]
+input_from = "inbox-collector.output_path"
+
+[hand.dashboard]
+metrics = ["items_processed", "projects_created", "trash_dumped"]
+
+[[hand.dashboard.widgets]]
+type = "stat"
+metric = "inbox_zero_streak" 
+style = "success"
+
+[[hand.dashboard.widgets]]
+type = "chart"
+metric = "items_processed"
+period = "7d"
+style = "bar"
 
 [metadata]
 created = "2026-03-17"
