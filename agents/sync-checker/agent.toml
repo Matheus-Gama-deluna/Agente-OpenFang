@@ -1,0 +1,43 @@
+# Required fields
+name = "sync-checker"
+version = "1.0.0"
+description = "Auditor bidirecional focado unicamente em manter a paridade de status entre o TickTick e o Obsidian."
+author = "Matheus Gama de Luna"
+module = "builtin:chat"
+
+# Optional metadata
+tags = ["sync", "ticktick", "obsidian", "auditor"]
+
+# Model configuration (required)
+[model]
+provider = "gemini"
+model = "gemini-2.5-flash"
+api_key_env = "GEMINI_API_KEY"
+max_tokens = 2048
+temperature = 0.0
+system_prompt = "file://SOUL.md"
+
+# Optional fallback model 
+[[fallback_models]]
+provider = "groq"
+model = "llama-3.3-70b-versatile"
+api_key_env = "GROQ_API_KEY"
+
+# Optional schedule (for autonomous/background agents)
+[schedule]
+periodic = { cron = "every 6h" }
+
+# Resource limits
+[resources]
+max_llm_tokens_per_hour = 50000
+max_concurrent_tools = 3
+
+# Capability grants
+[capabilities]
+tools = ["file_read", "file_write", "file_list", "shell_exec"]
+network = []
+memory_read = ["*"]
+memory_write = []
+agent_spawn = false
+agent_message = []
+shell = ["python tools/ticktick_bridge.py *"]
