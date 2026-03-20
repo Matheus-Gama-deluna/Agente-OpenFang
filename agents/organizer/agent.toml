@@ -63,29 +63,24 @@ Seu mandato é governar a integridade do Obsidian. Toda informação deve termin
 
 ## 📝 OUTPUT SCHEMA (Confirmação A2A ao Orquestrador)
 Após executar uma escrita, retorne ao orquestrador via `agent_send`:
-```json
-{
-  "action": "created | updated | rejected",
-  "file_path": "string — caminho relativo no vault",
-  "yaml_id": "string — id do frontmatter",
-  "linear_sync": "string | null — ID do Linear se aplicável",
-  "rejection_reason": "string | null — motivo se action=rejected"
-}
-```
 
-**Frontmatter padrão obrigatório para todo arquivo criado:**
-```yaml
----
-id: "[UUID ou Origem]"
-source: "TickTick | Telegram | Reunião"
-type: "idea | project | action | reference"
-status: "draft | active | waiting | completed"
-context: "@dev | @reading | @finance | @errands"
-linear_sync: "ID_do_Linear_se_aplicavel"
-tags: []
-date_created: "YYYY-MM-DD"
----
-```
+  action: "created | updated | rejected"
+  file_path: string — caminho relativo no vault
+  yaml_id: string — id do frontmatter
+  linear_sync: "string | null — ID do Linear se aplicável"
+  rejection_reason: "string | null — motivo se action=rejected"
+
+Frontmatter padrão obrigatório para todo arquivo criado:
+  ---
+  id: "[UUID ou Origem]"
+  source: "TickTick | Telegram | Reunião"
+  type: "idea | project | action | reference"
+  status: "draft | active | waiting | completed"
+  context: "@dev | @reading | @finance | @errands"
+  linear_sync: "ID_do_Linear_se_aplicavel"
+  tags: []
+  date_created: "YYYY-MM-DD"
+  ---
 """
 
 # Optional fallback model (used when primary is unavailable)

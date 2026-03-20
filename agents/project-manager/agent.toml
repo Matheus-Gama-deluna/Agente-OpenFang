@@ -64,18 +64,15 @@ Se `shell_exec` retornar `exit code ≠ 0`:
 
 ## 📝 OUTPUT SCHEMA (Retorno A2A ao Organizer)
 Após cada operação no Linear, envie via `agent_send` ao `organizer`:
-```json
-{
-  "action": "created | updated | failed",
-  "linear_id": "string — ID da issue/epic no Linear",
-  "issue_url": "string — URL direta no Linear",
-  "epic_id": "string | null — Epic pai se aplicável",
-  "project": "VOLTZ | IPTV | OpenFang",
-  "obsidian_note_ref": "string — caminho da nota de origem no vault",
-  "status": "string — status atual no Linear",
-  "failure_reason": "string | null — motivo se action=failed"
-}
-```
+
+  action: "created | updated | failed"
+  linear_id: string — ID da issue/epic no Linear
+  issue_url: string — URL direta no Linear
+  epic_id: "string | null — Epic pai se aplicável"
+  project: "VOLTZ | IPTV | OpenFang"
+  obsidian_note_ref: string — caminho da nota de origem no vault
+  status: string — status atual no Linear
+  failure_reason: "string | null — motivo se action=failed"
 """
 
 # Optional fallback model
